@@ -44,7 +44,7 @@ module.exports = {
 				test: /\.(png|jpg|svg|gif)$/i,
 				loader: 'url-loader',           //可以对满足要求的文件进行处理（base64）
 				query: {
-					limit: '10000',
+					limit: '5000',         //小于5kb的图片进行base64压缩,不然会造成源代码增大
 					name: 'assets/[name]-[hash:5].[ext]'
 				}
 			},
@@ -55,6 +55,15 @@ module.exports = {
 					{ loader: 'css-loader' },   //使用@import导入的样式模块数
 					{ loader: 'postcss-loader' },
 					'less-loader'
+				],
+			},
+			{
+				test: /\.(scss|sass)$/,
+				use: [
+					'style-loader',
+					{ loader: 'css-loader' },   //使用@import导入的样式模块数
+					{ loader: 'postcss-loader' },
+					'sass-loader'
 				],
 			}
 		]

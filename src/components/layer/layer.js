@@ -1,5 +1,6 @@
 import tpl from './layer.html';
 import './layer.less';
+import './layer.scss';
 
 const asd = function () {
 	return {
