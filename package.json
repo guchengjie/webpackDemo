@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack": "webpack --config webpack.config.js --progress --display-modules --colors --display-reasons"
+    "start": "npm run server",
+    "server": "webpack-dev-server --open",
+    "build": "webpack --config webpack.config.js --progress --display-modules --colors --display-reasons"
   },
   "author": "Mr gu",
   "license": "ISC",
@@ -25,7 +27,8 @@
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.1",
     "url-loader": "^0.6.2",
-    "webpack": "^3.10.0"
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
   },
   "description": "webpack demo"
 }

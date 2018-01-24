@@ -11,6 +11,13 @@ module.exports = {
 		path: path.resolve(__dirname, 'dist'),   //现在这里只能填写绝对路径
 		filename: 'js/[name].bundle.js'
 	},
+	devServer: {
+	    contentBase: path.join(__dirname, "dist"),      	//本地服务器所加载的页面所在的目录
+	    historyApiFallback: false,			//不跳转
+	    inline: true,					//实时刷新
+	    port: '8000', 				//服务器端口号
+	    hot: true     					//热更新
+	},
 	module: {
 		rules: [
 			{
@@ -41,7 +48,7 @@ module.exports = {
 			// 	}
 			// },
 			{
-				test: /\.(png|jpg|svg|gif)$/i,
+				test: /\.(png|jpe?g|svg|gif)$/i,
 				loader: 'url-loader',           //可以对满足要求的文件进行处理（base64）
 				query: {
 					limit: '5000',         //小于5kb的图片进行base64压缩,不然会造成源代码增大
@@ -69,12 +76,13 @@ module.exports = {
 		]
 	},
 	plugins: [
+		new webpack.BannerPlugin('版权所有，翻版必究'),    //为每个 chunk(模块) 文件头部添加 banner
+		new webpack.HotModuleReplacementPlugin(),  			//热加载插件
 		new htmlWebpackPlugin({
 			filename: 'index.html',
 			template: 'index.temp.html',
 			inject: 'body',
 			title: 'wo is a new html',   //向html模板传参
 		})
-
 	]
 }
