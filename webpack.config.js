@@ -1,6 +1,12 @@
+const webpack = require('webpack');
 const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+// const extractCSS = new ExtractTextPlugin('stylesheets/[name]-one.css');
+// const extractLESS = new ExtractTextPlugin('stylesheets/[name]-two.css');
+// const extractSASS = new ExtractTextPlugin('stylesheets/[name]-two.css');
 
 module.exports = {
 	devtool: 'eval-source-map',
@@ -28,11 +34,13 @@ module.exports = {
 			},
 			{
 				test: /\.css$/,
-				use: [
-					'style-loader',
-					{ loader: 'css-loader', options: { importLoaders: 1 }},   //使用@import导入的样式模块数
-					{ loader: 'postcss-loader' }
-				],
+				use: ExtractTextPlugin.extract({              //把样式表独立出来,在外部引入样式
+					use: [ 
+						{ loader: 'css-loader', options: { importLoaders: 1 }},   //使用@import导入的样式模块数
+						{ loader: 'postcss-loader' }
+					],
+					fallback: 'style-loader'   // 在开发环境使用 style-loader
+				}),
 				// loader: 'style-loader!css-loader!postcss-loader',    执行顺序从右到左,或从下到上
 				include: path.resolve(__dirname, 'src')
 			},
@@ -83,6 +91,12 @@ module.exports = {
 			template: 'index.temp.html',
 			inject: 'body',
 			title: 'wo is a new html',   //向html模板传参
-		})
+		}),
+		new CleanWebpackPlugin('dist/*.*', {   //清除打包的历史文件
+	      root: __dirname,
+	      verbose: true,
+	      dry: false
+	    }),
+	    new ExtractTextPlugin('css/global.css')
 	]
 }
