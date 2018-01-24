@@ -4,9 +4,9 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-// const extractCSS = new ExtractTextPlugin('stylesheets/[name]-one.css');
-// const extractLESS = new ExtractTextPlugin('stylesheets/[name]-two.css');
-// const extractSASS = new ExtractTextPlugin('stylesheets/[name]-two.css');
+const extractCSS = new ExtractTextPlugin('[name]-one.css');
+const extractLESS = new ExtractTextPlugin('[name]-two.css');
+const extractSASS = new ExtractTextPlugin('[name]-tree.css');
 
 module.exports = {
 	devtool: 'eval-source-map',
@@ -34,7 +34,7 @@ module.exports = {
 			},
 			{
 				test: /\.css$/,
-				use: ExtractTextPlugin.extract({              //把样式表独立出来,在外部引入样式
+				use: extractCSS.extract({              //把样式表独立出来,在外部引入样式
 					use: [ 
 						{ loader: 'css-loader', options: { importLoaders: 1 }},   //使用@import导入的样式模块数
 						{ loader: 'postcss-loader' }
@@ -65,21 +65,25 @@ module.exports = {
 			},
 			{
 				test: /\.less$/,
-				use: [
-					'style-loader',
-					{ loader: 'css-loader' },   //使用@import导入的样式模块数
-					{ loader: 'postcss-loader' },
-					'less-loader'
-				]
+				use: extractLESS.extract({
+					use: [
+						{ loader: 'css-loader' },   //使用@import导入的样式模块数
+						{ loader: 'postcss-loader' },
+						'less-loader'
+					],
+					fallback: 'style-loader'
+				})
 			},
 			{
 				test: /\.(scss|sass)$/,
-				use: [
-					'style-loader',
-					{ loader: 'css-loader' },   //使用@import导入的样式模块数
-					{ loader: 'postcss-loader' },
-					'sass-loader'
-				]
+				use: extractSASS.extract({
+					use: [
+						{ loader: 'css-loader' },   //使用@import导入的样式模块数
+						{ loader: 'postcss-loader' },
+						'sass-loader'
+					],
+					fallback: 'style-loader'
+				})
 			}
 		]
 	},
@@ -97,6 +101,8 @@ module.exports = {
 	      verbose: true,
 	      dry: false
 	    }),
-	    new ExtractTextPlugin('css/global.css')
+	    extractCSS,
+	    extractSASS,
+	    extractLESS
 	]
 }
