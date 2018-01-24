@@ -55,7 +55,7 @@ module.exports = {
 					{ loader: 'css-loader' },   //使用@import导入的样式模块数
 					{ loader: 'postcss-loader' },
 					'less-loader'
-				],
+				]
 			},
 			{
 				test: /\.(scss|sass)$/,
@@ -64,7 +64,7 @@ module.exports = {
 					{ loader: 'css-loader' },   //使用@import导入的样式模块数
 					{ loader: 'postcss-loader' },
 					'sass-loader'
-				],
+				]
 			}
 		]
 	},
