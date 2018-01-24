@@ -3,7 +3,7 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
-	devtool: 'source-map',
+	devtool: 'eval-source-map',
 	entry: {
 		main: './src/app.js',
 	},
@@ -17,32 +17,17 @@ module.exports = {
 				test: /\.js$/,
 				loader: 'babel-loader',
 				include: path.resolve(__dirname, 'src'),
-				exclude: path.resolve(__dirname, 'node-modules'),
-				query: {
-					presets: ['latest']
-				}
+				exclude: path.resolve(__dirname, 'node-modules')
 			},
 			{
 				test: /\.css$/,
 				use: [
 					'style-loader',
 					{ loader: 'css-loader', options: { importLoaders: 1 }},   //使用@import导入的样式模块数
-					{ 
-						loader: 'postcss-loader',
-						options: { 
-							parser: 'postcss',   //解析器
-							plugins: [
-								require('postcss-import')(),   //一定要写在require("autoprefixer")前面，否则require("autoprefixer")无效
-								require('autoprefixer')({
-									broswers: ['last 5 versions']
-								})
-							]
-						}
-					}
+					{ loader: 'postcss-loader' }
 				],
 				// loader: 'style-loader!css-loader!postcss-loader',    执行顺序从右到左,或从下到上
-				include: path.resolve(__dirname, 'src'),
-				exclude: path.resolve(__dirname, 'node-modules')
+				include: path.resolve(__dirname, 'src')
 			},
 			{
 				test: /\.html$/,         //.html结尾的模板解析
@@ -68,18 +53,7 @@ module.exports = {
 				use: [
 					'style-loader',
 					{ loader: 'css-loader' },   //使用@import导入的样式模块数
-					{ 
-						loader: 'postcss-loader',
-						options: { 
-							parser: 'postcss',   //解析器
-							plugins: [
-								require('postcss-import')(),   //一定要写在require("autoprefixer")前面，否则require("autoprefixer")无效
-								require('autoprefixer')({
-									broswers: ['last 5 versions']
-								})
-							]
-						}
-					},
+					{ loader: 'postcss-loader' },
 					'less-loader'
 				],
 			}
