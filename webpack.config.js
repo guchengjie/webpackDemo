@@ -56,7 +56,8 @@ module.exports = {
 			},
 			{
 				test: /\.html$/,         //.html结尾的模板解析
-				loader: 'html-loader'
+				loader: 'html-loader',
+				exclude: path.resolve(__dirname, 'index.temp.html')   //解决了和htmlwebpackplugin的冲突但是模板首页的资源就没法解析，或者是用.ejs模板来处理
 			},
 			// {
 			// 	test: /\.(png|jpg|svg|gif)$/i,
