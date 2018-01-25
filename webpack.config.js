@@ -4,9 +4,18 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const extractCSS = new ExtractTextPlugin('[name]-one.css');
-const extractLESS = new ExtractTextPlugin('[name]-two.css');
-const extractSASS = new ExtractTextPlugin('[name]-tree.css');
+const extractCSS = new ExtractTextPlugin({
+	filename: path.join('css','[name]-[contenthash:5].css'),
+	allChunks: true
+});
+const extractLESS = new ExtractTextPlugin({
+	filename: path.join('css','[name]-[contenthash:5].css'),
+	allChunks: true
+});
+const extractSASS = new ExtractTextPlugin({
+	filename: path.join('css','[name]-[contenthash:5].css'),
+	allChunks: true
+});
 
 module.exports = {
 	devtool: 'eval-source-map',
@@ -14,8 +23,9 @@ module.exports = {
 		main: './src/app.js',
 	},
 	output: {
-		path: path.resolve(__dirname, 'dist'),   //现在这里只能填写绝对路径
-		filename: 'js/[name].bundle.js'
+		path: path.resolve(__dirname, 'dist/'),   //现在这里只能填写绝对路径
+		filename: 'js/[name].bundle.js',
+		publicPath: '/'           //开发环境publicPath设置为‘/’或在开发是‘http://localhost:8000/’.有利于解决ExtractTextPlugin输出文件路径的图片路径问题
 	},
 	devServer: {
 	    contentBase: path.join(__dirname, "dist"),      	//本地服务器所加载的页面所在的目录
@@ -56,7 +66,7 @@ module.exports = {
 			// 	}
 			// },
 			{
-				test: /\.(png|jpe?g|svg|gif)$/i,
+				test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
 				loader: 'url-loader',           //可以对满足要求的文件进行处理（base64）
 				query: {
 					limit: '5000',         //小于5kb的图片进行base64压缩,不然会造成源代码增大
